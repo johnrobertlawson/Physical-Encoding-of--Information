@@ -1,0 +1,438 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% amspaper.tex --  LaTeX-based template for submissions to American 
+% Meteorological Society journals
+%
+% Template developed by Amy Hendrickson, 2013, TeXnology Inc., 
+% amyh@texnology.com, http://www.texnology.com
+% following earlier work by Brian Papa, American Meteorological Society
+%
+% Email questions to latex@ametsoc.org.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREAMBLE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Start with one of the following:
+% DOUBLE-SPACED VERSION FOR SUBMISSION TO THE AMS
+\documentclass{ametsoc}
+\usepackage{charter}
+
+
+% TWO-COLUMN JOURNAL PAGE LAYOUT---FOR AUTHOR USE ONLY
+% \documentclass[twocol]{ametsoc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*{\expect}{\mathsf{E}}
+\newcommand*{\probnwp}{$\mathsf{P}_{\textrm{NWP}}$}
+\newcommand*{\probclimo}{$\mathsf{P}_{\textrm{climo}}$}
+\newcommand*{\prob}{\mathsf{P}}
+
+\def\approx{$\sim$}
+\def\degarc{$^{\circ}$} %For lat/lon, angle of wind etc
+\def\degC{$^{\circ}$C} %For Celsius
+\def\gt{\textgreater}
+\def\appgt{$\gtrapprox$}
+\def\applt{$\lessapprox$}
+\def\lt{\textless}
+\def\mmss{m$^{2}$\,s$^{-2}$}
+\def\Km{$\textrm{K}\,\textrm{m}^{-1}$}
+%\def\dptp{$\theta_{\rho}'$}
+\def\dx{$\Delta x$}
+\def\dxthree{$\Delta x$~=~3\,km}
+\def\dxone{$\Delta x$~=~1\,km}
+\def\mps{$\textrm{m\,s}^{-1}$}
+%\def\qpert{$q'$}
+\def\milli{$\times 10^{-3}$}
+\def\uhmax{$\textrm{UH}_{max}$}
+\def\shear{$U_s$}
+\def\buoy{$q_{v0}$}
+\def\dke{DKE}
+\def\ddke{dDKE}
+\def\gkg{$\textrm{g\,kg}^{-1}$}
+\def\jkg{$\textrm{J\,kg}^{-1}$}
+\def\osig{$\textrm{IG}_{\textrm{obj}}$}
+\def\uhlow{$\textrm{UH}_{02}$}
+\def\uhmid{$\textrm{UH}_{25}$}
+\def\awslow{$\textrm{AWS}_{02}$}
+\def\awsmid{$\textrm{AWS}_{25}$}
+\def\mesogamma{meso-$\gamma$-scale}
+\def\plmn{$\pm$}
+\def\igno{$\textrm{IGN}_{o}$}
+\def\dxsubkm{$\Delta x$~\lt~1\,km}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% To be entered only if twocol option is used
+
+\journal{jas}
+
+%  Please choose a journal abbreviation to use above from the following list:
+% 
+%   jamc     (Journal of Applied Meteorology and Climatology)
+%   jtech     (Journal of Atmospheric and Oceanic Technology)
+%   jhm      (Journal of Hydrometeorology)
+%   jpo     (Journal of Physical Oceanography)
+%   jas      (Journal of Atmospheric Sciences)	
+%   jcli      (Journal of Climate)
+%   mwr      (Monthly Weather Review)
+%   wcas      (Weather, Climate, and Society)
+%   waf       (Weather and Forecasting)
+%   bams (Bulletin of the American Meteorological Society)
+%   ei    (Earth Interactions)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Citations should be of the form ``author year''  not ``author, year''
+\bibpunct{(}{)}{;}{a}{}{,}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% To be entered by author:
+
+%% May use \\ to break lines in title:
+
+\title{Physical encoding of information: NWP as a decoder}
+
+%%% Enter authors' names, as you see in this example:
+%%% Use \correspondingauthor{} and \thanks{Current Affiliation:...}
+%%% immediately following the appropriate author.
+%%%
+%%% Note that the \correspondingauthor{} command is NECESSARY.
+%%% The \thanks{} commands are OPTIONAL.
+
+\authors{John R.\ Lawson
+        \correspondingauthor{NOAA/National Severe Storms Laboratory, National Weather Center, 120 David L. Boren Blvd., Norman, OK 73072.}
+    and Corey K.\ Potvin
+        \thanks{Current affiliation: NOAA/OAR/National Severe Storms Laboratory, Norman, OK}
+    }
+    \affiliation{Cooperative for Mesoscale Meteorological Studies, University of Oklahoma, Norman, OK\\NOAA/OAR/National Severe Storms Laboratory, Norman, OK}
+    \email{john.lawson@noaa.gov}
+    %}
+    
+\extraauthor{Patrick S.\ Skinner
+    %\thanks{Current affil}
+    }
+\extraaffil{NOAA/OAR/National Severe Storms Laboratory, Norman, OK}
+
+\extraauthor{Montgomery L.\ Flora
+    %\thanks{Current affil 2}
+    }
+\extraaffil{Cooperative for Mesoscale Meteorological Studies, University of Oklahoma, Norman, OK\\NOAA/OAR/National Severe Storms Laboratory, Norman, OK}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ABSTRACT
+%
+% Enter your Abstract here
+
+\abstract{Many methods that evaluate numerical weather prediction (NWP) ensembles were (1) built from work in psychophysics, (2) adapted suboptimally from deterministic methods, and/or (3) developed with suboptimal approximations of information-theoretical functions. Herein, we present a model of forecasting atmospheric phenomena based on Information Theory and Shannon's Model of Communication. We treat hazards as messages; weather phenomena as the encoder of the message through atmospheric configuration; and NWP models as decoders (detecting the message within a noisy channel), yielding a partly erroneous message (i.e., forecast error). This framework supports extensions such as evaluation of the message's dissemination to end-users, optimization by machine learning, etc. \\
+\indent In this framework, then channel capacity (maximum supported transmission rate) is the inherent predictability horizon for all wavelengths; useful throughput (non-erroneous transmission) becomes the skill. Further, we coin two verification scores that measure the information gained by decoding the atmospheric configuration (physical information): Object-specific Information Gain (OSIG) and Fractional Information Gain (FIG). These scores are probabilistic, are tolerant of timing and spatial errors, and provide Brier-type decomposition. Both scores are in units of bits: the fundamental measure of informatio\textbf{}n. We end by noting the potential generality of this model: the same framework can be extended to the detection of any future event of interest to a decision-maker.} 
+
+\usepackage{nomencl}
+\makenomenclature
+
+\begin{document}
+
+
+%% Necessary!
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MAIN BODY OF PAPER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section{Introduction}
+The concept of 
+
+
+
+\section{Framework}
+Consider a useful message $W$, sent by undefined source $A$ in the set of possible useful messages $W_\textrm{useful}$, itself a subset of the total messages $W_\textrm{all}$, transmitted by the system $S$:
+
+\begin{align}
+    W \in \mathbb{W_\textrm{useful}} \subset \mathbb{W_\textrm{all}}  \\
+\end{align}
+
+where $\Sigma$ is the set of symbols (e.g., atmospheric variables) from which phenomenon $O$ can draw its encoding configuration. The distinction between $\mathbb{W_{\textrm{useful}}}$ and $\mathbb{W_\textrm{useful}}$ is important in cases with similar processes with very different practical repercussions (e.g., sensitivity of freezing rain to small changes in low-level profile). Next, we may let $S$ be the climate system, and $O$ as the encoded form of the message (e.g., supercell). This is an analogue of the motivation behind object-identification: the application of understanding the weather is to detect hazards for mitigation purposes. We may also let $W$ be, in meaning, ``You should shelter from an imminent tornado". The length of bits required to represent this sentence in English is irrelevant: ultimately, this is a hazard resolved by a binary decision that is transmitted by $O$, having been corrupted by noise en route to the receiver (NWP model). More abstractly, the ignorance of $B$ is $-\log_2\big( \expect \big)$. This ignorance is exponentially more difficult to remove as expectation of the event $\expect(x)$ linearly decreases to zero. Indeed, a user convinced that the event will or will not happen (i.e., cannot be persuaded otherwise) holds unbounded positive ignorance. Hence, this is at the motivational core for a methodology shift from psychophysics-style to one based in information theory: a truer rewards for useful forecasts of rare events. 
+
+The channel through which signals are transmitted through (e.g., atmosphere), modelled as a probability distribution, has an upper bound on the amount of information that can be decoded by recipient $B$ (not all of which is useful). This is named the \emph{channel capacity}:
+
+\begin{align}\label{eq:C}
+    C =  \textrm{sup}\,I(X;Y)
+\end{align}
+
+where $\textrm{sup}$ is the supremum (least upper bound) for all choices of probability within the marginal distribution (HELP) (This can be converted to an expectation... do that?). The channel is noisy (i.e., observational and forecast error exists), hence the cdf of receiving sequence Y (code? phenomonon? hazard?), conditional on the transmission of sequence X, is a fixed property of the climate system (for this context, the climate is assumed to be a stationary system: one whose long-term statistical nature does not change). 
+
+In Eq.~\ref{eq:C}, we also introduce \emph{mutual information}, $I(X;Y)$, where $X$ and $Y$ represent input and output symbols (atmospheric variables), respectively. Here, we may also decompose the magnitude of information $I$ decoded from the detected transmission (NWP output) into useful ($I_{+}$) and detrimental ($I_{-}$) information gained (alternatively, the latter being \emph{information loss}).
+
+If we abstractly treat a NWP simulation as detecting future signals, then it becomes a \emph{decoder}. The original message (hazard) has been corrupted en route: in NWP terms, unavoidable errors in ICs, LBCs, and the model itself. The atmosphere is at least partly chaotic, and hence we expect exponential growth of error (noise) within the channel (climate system), with periods of intermittency (what's this, resonance?).
+
+The NWP system hence yields \probnwp($W'$), the NWP output probability that the original message $W$ had been transmitted.
+
+\section{Estimate the predictability horizon as channel capacity}
+In this framework, the limit of information that can be carried through $C$ is analagous to Lorenz's predictability horizon. 
+
+Consider Morse code: a very simple form of communication---comprising only three symbols--- that is resistant to error (due to low degree of freedom). Whilst Morse code is only XX\% optimal, due to the moderately efficient correlation between frequency of letter, and the time it takes to send one message (word, hazard, etc), it is far more efficient than a version that randomised the pairing of Morse code to symbol. Hence, crude (noisy) communication channels benefit from efficient encoding mechanisms. 
+
+Conversely, Traditional Mandarin Chinese (hereby Chinese) is at the opposite end of the spectrum: there are far more symbols, but one glance by a native speaker resolves ignorance more quickly than if the message were communicated via Morse Code. However, there are two drawbacks. First, the dictionary (abstractly and literally) required by $B$ to understand (sufficiently detect) $W$ when encoded as Chinese is far bigger than the dictionary that human Morse decoders required to sufficiently detect $W$. Second, given the larger degrees of freedom, there is more room for catastrophic misunderstanding. If one letter in ten is erroneously encoded during Morse code transmission, the message is likely to be understood regardless, as there are only (30?) permutations. In Chinese, a slip of the pen can result in [insert obscure reference to two words that are very different in meaning, but written similarly)
+
+We can draw an analogy here: if we use an NWP system to forecast (detect) the magnitude of temperature at a given location and time, with no tolerance in accuracy, time, or space, then there is far more complexity to decode (ignorance to remove). Conversely, tolerances (e.g., filtering; averaging) combine much error (i.e., low-frequency noise) such that the signal-to-noise ratio (SNR) increases. However, this paradigm is brittle: phenomena (instances of $O$) that demonstrate hazards with large cost--loss ratios (CLR), such as discriminating between tornadogenesis and mesocyclone dissipation.
+
+Which signal are we trying to detect? In the 0--3-h, thunderstorm-scale application, the time required for error to grow unscale from the scale of truncation is shorter than at larger scales. The effective resolution of a model with horizontal grid spacing \dx{} is approximately $6\Delta~x$; hence, a wavelength $\lambda < 18\,\textrm{km}$ is not only below the scale of effective resolution, but also reach $I_+ = 0$ exponentially faster than scales (a power higher?). In the chaos theory paradigm: the forecast becomes error-saturated at $\lambda$.) Hence, the grid-resolution sets an artificial "Planck-length" in four dimensions, or five with ensemble!
+
+% tu / shi example a fifth of the way down?
+%http://blog.tutorming.com/mandarin-chinese-learning-tips/chinese-characters-that-look-alike
+
+% Cite Gleick and Pierce for this example!
+
+\section{Optimising grid-spacing for the problem}
+The model developer chooses \dx. 
+
+\section{Predictability horizons}
+From Shannon (ref), we may define \emph{goodput} as the ratio of useful information gained to total information transferred ($\dfrac{I_+}{I\,t}$), as a rate in unit time $t$. The latter (Iis also defined as \emph{throughout}. Typically, goodput \lt{} throughput \lt{} $C$. 
+
+If NWP is a decoder of physical information, revealing a hazard's risk as noisy messages ($W'$), then there is a point at which the user $B$ cannot discriminate between signal and noise. Hence, the estimate of risk held by $B$ is not changed. This information or predictability horizon is measured in time, and is the analogue of a \emph{NWP goodput} (only computable after observation; practical?), or \emph{NWP throughput} (the inherent predictability horizon of a given information instance).
+
+If we can predict a goodput ratio --- a function of wavelength, perhaps \dx, definitely model climate (not stationary system without frozen model) -- that gives us meta-predictability, or we can normalise skill estimates perhaps? FIG/OSIG
+
+\section{The Information Cascade}
+The naive user $B$ begins with infinite ignorance (in the event of infinite outcomes). Practically, a forecaster can greatly reduce this ignorance (i.e., cascade of information through the monodirectional channel in Fig. XX) by restricting the Bayesian prior estimate of outcomes to (a) those hazards of interest in $\mathbb{W}_\textrm{useful}$, and (b) those within a given subdomain (e.g., the knowledge that winter reduces the naive likelihood of tornadoes). Alternatively, user $B$ may crudely exploit the autocorrelation of low-variability atmospheric flows, with a strong diurnal component, via \emph{persistence}; that is, assigning $\expect(x)$ a value identical to 24 h earlier.
+
+Of course, the ignorance can be reduced further. For example: in the case of rapidly updating ensemble-data-assimilation (EDA) systems, on the thunderstorm time- and length-scales, ignorance may be reduced through the detection of high SNR signals from Doppler-radar and satellite data. This applies to the forecaster's conceptual model as well as the iterative, computational process of EDA. Constraining uncertainty, in information-theory terms, is reducing the entropy (or ignorance) for $B$. 
+
+
+\section{Application: verification of WoFS forecasts}
+Blah
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TABLES---PLACE AT END OF DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FIGURES---PLACE AT END OF DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ACKNOWLEDGMENTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\acknowledgments
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APPENDIXES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% If only one appendix, use
+%%\appendix%
+
+%% If more than one appendix, use \appendix[<letter>], e.g.,
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%APPENDIX FIGURE AND TABLE EXAMPLES---PLACE AT END OF DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\begin{table}
+%\appendcaption{A1}{Here is the appendix table caption.}
+%\centering
+%\begin{tabular}{ccc}
+%a&b&c\\
+%d&e&f
+%\end{tabular}
+%\end{table}
+%
+%\begin{figure}
+%\centerline{(illustration here)}
+%\appendcaption{A1}{Here is the appendix figure caption.}
+%\end{figure}
+%
+ \appendix[A] 
+
+%\appendixtitle{Symbol definitions (TODO)}
+\printnomenclature[6em]
+
+\nomenclature{$W$}{The useful message (i.e., hazard), in the uncorrupted form transmitted from instance of physical information}%
+\nomenclature{$W'$}{The original useful message (i.e., hazard), corrupted (i.e., skill reduced by error) by a given amount while passing through channel $C$}%
+\nomenclature{$\mathbb{W_{\textrm{useful}}}$,\,$\mathbb{W_{\textrm{all}}}$}{The set of useful and total messages, respectively, that can be transmitted by (occur with) phenomena in $\mathbb{O'}$ (or in concept only, by elements of Ideal Forms $\mathbb{O}$)}%
+\nomenclature{$C$}{The channel capacity, in information transfer per second}%
+\nomenclature{$O'$}{The atmosphere phenomenon, or more abstractly, the physical encoding instance of the message $W$. $O'$ belongs to an infinite set $\mathbb{O'}$ of corrupted copies of $O$}%
+\nomenclature{$O$}{The conceptual model of phenomenon $O$, or more abstractly, the Ideal Form of instance $O$.  }%
+\nomenclature{$A$}{Abstractly, the transmitter (from `Alice')}%
+\nomenclature{$B$}{Abstractly, the receiver (from `Bob')}%
+\nomenclature{$T$}{The length of the transmission (in seconds). This is assumed to tend to infinity.}%
+
+\nomenclature{$\mathbb{O}$}{A finite set of all Ideal Forms possible in the system subdomain of interest; i.e., $\mathbb{O} = \{O_1,O_2,...,O_N\}$,  where $N$ is the number of possible Forms (e.g., modes of hazard)}%
+
+\nomenclature{$N$}{Number of possible Ideal Forms in set $\mathbb{O}$}%
+
+\nomenclature{$\expect(x)$}{User expectation probability of event $x$, bounded by [0,1] (this is inclusive - check notation)}%
+\nomenclature{$x$}{}%
+
+\nomenclature{$\prob(x)$}{Model-forecasted probability of event $x$, where clipping (described in text) yields $0 > \prob(x) > 1$ to avoid the impractical divergence to infinity.}%
+\nomenclature{$x$}{}%
+
+
+
+\nomenclature{$\in$}{Belonging to the set of}%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix[B]
+\appendixtitle{File Structure of the AMS \LaTeX\ Package}
+
+\subsection{AMS \LaTeX\ files}
+You will be provided with a tarred, zipped \LaTeX\ package containing 
+17 files. These files are
+
+\begin{description}
+\item[Basic style file:] ametsoc.cls. 
+
+The file ametsoc.cls is the manuscript style file.  
+
+\begin{itemize}
+\item
+Using \verb+\documentclass{ametsoc}+ for your .tex document
+will 
+generate a PDF that follows all AMS guidelines for submission and peer
+review.  
+
+\item
+Using \verb+\documentclass[twocol]{ametsoc}+ for your .tex document
+can be used to generate a PDF that closely
+follows the layout of an AMS journal page, including single spacing and two
+columns.  This journal style PDF is only for the author's personal use, and
+any papers submitted in this style will not be accepted.  
+\end{itemize}
+Always use \verb+\documentclass{ametsoc}+ 
+when generating a PDF for submission to the AMS. 
+
+\item[Template:]
+template.tex, for the author to use when making his/her
+paper.
+The file provides a basic blank template with some
+section headings for authors to easily enter their manuscript.
+
+\item[Sample .tex and .pdf files:]
+The file amspaper.tex contains the \LaTeX\ code for the sample file.  
+The resulting PDF can be seen in amspaper.pdf (this file).
+
+
+\item[Sample article:] article formatted in draft and two-column mode.
+
+\begin{itemize}
+\item
+AMSSamp1.tex, AMSSamp1.pdf\\
+Formal paper done in draft mode and the resulting .pdf.
+
+\item
+AMSSamp2.tex, AMSSamp2.pdf \\
+The same paper using the \verb+[twocol]+ option and the resulting .pdf.
+
+\item
+FigOne.pdf, FigTwo.pdf, and figure01.pdf are sample figures.
+
+
+\end{itemize}
+
+\item[Bibliography Files:]
+
+ametsoc2014.bst, database2014.bib, and references.bib.  
+
+\begin{itemize}
+\item
+ametsoc2014.bst is the bibliography style file. 
+
+\item
+database2014.bib is an example of a bibliographic database file.
+
+\item
+references.bib should be altered with your own bibliography information.  
+\end{itemize}
+
+
+
+\item[Documention:] found in AMSDocs.pdf. Additional information
+found in
+readme.txt, which contains a list of the files and how they are used.
+
+\end{description}
+
+\subsection{Help for Authors}
+Questions and feedback concerning the use of the AMS \LaTeX\ files should be
+directed to latex@ametsoc.org. Additional information is available on the AMS
+\LaTeX\ Submission Info web page (\url{http://www2.ametsoc.org/ams/index.cfm/publications/authors/journal-and-bams-authors/author-resources/latex-author-info/}).
+
+
+
+\appendix[C]
+\appendixtitle{Building a PDF and Submitting Your 
+\LaTeX\ Manuscript Files to the AMS}
+
+\subsection{Building your own PDF}
+There are a variety of different methods and programs that will create a
+final PDF from your \LaTeX\ files. The easiest method is to download one of
+the freely available text editors/compilers such as TexWorks or TeXnicCenter.
+TexWorks is installed with the TeXLive distribution and provides both a text
+editor and the ability to compile your files into a PDF.
+
+\subsection{Submitting your files to the AMS for peer review}
+The AMS uses the Editorial Manager system for all author submissions for
+peer review. Editorial Manager uses the freely available \TeX\ Live 2011
+distribution. This system will automatically generate a PDF from your
+submitted \LaTeX\ files and figures.  
+
+You should not upload your own PDF into
+the system. If the system does not build the PDF from your files correctly,
+refer to the AMS \LaTeX\ FAQ page first for possible solutions. If your PDF
+still does not build correctly after trying the solutions on the FAQ page, email
+latex@ametsoc.org for help.
+
+\subsection{Other software}
+As mentioned above, there is a variety of software that can be used to edit
+.tex files and build a PDF.  The AMS does not support \LaTeX\/-related
+WYSIWYG software, such as Scientific Workplace, or WYSIWYM software, such as
+LyX.  \TeX\ Live (available online at \\ \url{http://www.tug.org/texlive/}) is
+recommended for users needing an up-to-date \LaTeX\ distribution with
+software that includes an editor and the ability to automatically generate a
+PDF.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% REFERENCES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ This shows how to enter the commands for making a bibliography using
+ BibTeX. It uses references.bib and the ametsoc2014.bst file for the style.
+
+ \bibliographystyle{ametsoc2014}
+ \bibliography{paperpile}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
