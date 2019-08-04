@@ -263,6 +263,60 @@ If independence is assumed (maybe very different days, and one time per "timesca
 \end{align}
 
 Thee first argument on the left side of the inequality is approximately $H$, when $N >> 0 $
+
+Convert from bits to nats with this identity:
+
+\begin{align}
+\log_b~p = log_b\,a~\log_p
+\end{align}
+
+Hence, $ b = \exp$ and ...?
+
+To convert from bits to nats, take the bit value and divide by $log_2~e$.
+
+"When the distribution is uniform across all possible outcomes, entropy is maximised"
+
+Gibbs entropy is defined as 
+
+
+\begin{align}
+H_G = -k_B \sum_{n=1}^{N}~p_n\,\log_2~p_n
+\end{align}
+
+where $k_B$ is Boltzmann's constant (units of J/K), 
+
+The absorption of heat by system $S$ at temperature $T$, is
+
+
+\begin{align}
+\delta~H_c = \frac{\delta~E}{T}
+\end{align}
+
+When an isolated system is in equalibrium, and when all states are equiprobable, $p_N = N^{-1}$, then $H_G$ is maximised, yielding Boltzmann style entropy:
+
+
+\begin{align}
+	H_B = k_B\,\log_2~N
+\end{align}
+
+If each state of the system is defined by an ensemble of M elementary modes (what?) then $N = 2^M$, yielding
+
+\begin{align}
+	H_B = k_B~M
+\end{align}
+
+Hence, total energy of the system:
+
+\begin{align}
+	E = k_B~T~M
+\end{align}
+
+The thermodynamic entropy of an isolated system in thermal equilibrium, subject to average energy constraints, corresponds to the statistical mechanical definition, where all states are equally probable, such that Gibbs energy is maximused, and attain's Boltzmann's fdorm. Shannon's definition is a dimensionless version of thermodynamic enbtropy (on the other hand... that paper that says otherwise.)
+
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TABLES---PLACE AT END OF DOCUMENT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -476,6 +530,7 @@ LyX.  \TeX\ Live (available online at \\ \url{http://www.tug.org/texlive/}) is
 recommended for users needing an up-to-date \LaTeX\ distribution with
 software that includes an editor and the ability to automatically generate a
 PDF.
+
 
 
 
